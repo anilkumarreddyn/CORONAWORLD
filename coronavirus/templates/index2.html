@@ -1,0 +1,831 @@
+{% extends 'base.html' %}
+{%block content %}
+{%load staticfiles %}
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                        <h1 class="mt-4"></h1>
+                       <!--  <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol> -->
+                        <div class="row">
+                    <!--  <div class="col-xl-3 col-md-6">
+                                <form action="{% url 'countries_form' %}" method="POST">
+                                    {% csrf_token %}
+                                  <div class="form-group">
+                                   
+                                    <select class="form-control" name="id">
+                                        <option>Select the Contry</option>
+                                            {% for i in covid   %}
+                                        <option  class="text-info" value="{{i.id}}"> {{i.country}}</option>
+                                        {% endfor %}
+                                    </select>
+                                  </div>
+                                  <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div> -->
+                          <div class="col-xl-3 col-md-6">
+                          <div class="card bg-info text-white mb-4">
+                              <div class="card-body">COVID-19 Active</div>
+                              <div class="card-footer d-flex align-items-center justify-content-between">
+                                <h5 class="align-items-center text-center text-white">{{total_active}}</h5>
+                                  <!-- <div class="small text-white"><i class="fas fa-angle-right"></i></div>-->
+                               </div>
+                          </div>
+                        </div> 
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-warning text-white mb-4">
+                                    <div class="card-body">COVID-19 Confirmed </div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                         <h5 class="align-items-center text-center text-white">{{total_confirmed}}</h5>
+                                        <!-- <div class="small text-white"><i class="fas fa-angle-right"></i></div> -->
+                                    </div>
+                                </div>
+                            </div>
+                       <div class="col-xl-3 col-md-6">
+                                <div class="card bg-success text-white mb-4">
+                                    <div class="card-body">Covid-19 Recovered </div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                         <h5 class="align-items-center text-center text-white">{{total_recovered}}</h5>
+                                         <!-- <div class="small text-white"><i class="fas fa-angle-right"></i></div> -->
+                                    </div>
+                                </div>
+                            </div>  
+                        <div class="col-xl-3 col-md-6">
+                          <div class="card bg-danger text-white mb-4">
+                              <div class="card-body">COVID-19 Deaths</div>
+                              <div class="card-footer d-flex align-items-center justify-content-between">
+                                  <h5 class="align-items-center text-center text-white">{{total_deaths}}</h5>
+                                  <!-- <div class="small text-white"><i class="fas fa-angle-right"></i></div>-->
+                               </div>
+                          </div>
+                        </div>  
+                        </div>
+                          <div class="row">
+                            <div class="col-xl-12">
+                                <!-- <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-area mr-1"></i>Area Chart Example</div>
+                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                </div> -->
+                                 <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Countries Active Covid-19 Cases More Than <b> 700</b></div>
+                                    <div class="card-body"><canvas id="topCountryActiveBarChart" width="100%" height="40"></canvas></div>
+                                </div> 
+                            </div>
+                            <div class="col-xl-12">
+                                <!-- <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-area mr-1"></i>Area Chart Example</div>
+                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                </div> -->
+                                 <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Countries Active Covid-19 Cases Between <b> 700 & 100</b></div>
+                                    <div class="card-body"><canvas id="midCountryActiveBarChart" width="100%" height="40"></canvas></div>
+                                </div> 
+                            </div>
+                            <div class="col-xl-12">
+                                <!-- <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-area mr-1"></i>Area Chart Example</div>
+                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                </div> -->
+                                 <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Countries Active Covid-19 Cases Less Than <b>100</b></div>
+                                    <div class="card-body"><canvas id="bottomCountryActiveBarChart" width="100%" height="40"></canvas></div>
+                                </div> 
+                            </div>
+                             <div class="col-xl-12">
+                                <!-- <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-area mr-1"></i>Area Chart Example</div>
+                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                </div> -->
+                                 <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Countries Recovered Covid-19 Cases More Than <b> 700</b></div>
+                                    <div class="card-body"><canvas id="topCountryRecoveredBarChart" width="100%" height="40"></canvas></div>
+                                </div> 
+                            </div> 
+                             <div class="col-xl-12">
+                                <!-- <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-area mr-1"></i>Area Chart Example</div>
+                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                </div> -->
+                                 <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Countries Recovered Covid-19 Cases Between <b> 700 & 100</b></div>
+                                    <div class="card-body"><canvas id="midCountryRecoveredBarChart" width="100%" height="40"></canvas></div>
+                                </div> 
+                            </div>  
+                            <div class="col-xl-12">
+                                <!-- <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-area mr-1"></i>Area Chart Example</div>
+                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                </div> -->
+                                 <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Countries Recovered Covid-19 Cases Less Than <b> 100 </b></div>
+                                    <div class="card-body"><canvas id="bottomCountryRecoveredBarChart" width="100%" height="40"></canvas></div>
+                                </div> 
+                            </div>  
+                            <div class="col-xl-12">
+                                <!-- <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-area mr-1"></i>Area Chart Example</div>
+                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                </div> -->
+                                 <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Countries Covid-19 Cases Deaths More Than <b> 700 </b></div>
+                                    <div class="card-body"><canvas id="topCountryDeathBarChart" width="100%" height="40"></canvas></div>
+                                </div> 
+                            </div> 
+                          
+                            <div class="col-xl-12">
+                                <!-- <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-area mr-1"></i>Area Chart Example</div>
+                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                </div> -->
+                                 <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Countries Covid-19 Cases Deaths Less Than <b> 700 </b></div>
+                                    <div class="card-body"><canvas id="bottomCountryDeathBarChart" width="100%" height="40"></canvas></div>
+                                </div> 
+                            </div> 
+                             <div class="col-xl-12">
+                                <!-- <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-area mr-1"></i>Area Chart Example</div>
+                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                </div> -->
+                                 <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Countries Confirmed Covid-19 Cases  More Than <b> 5000 </b></div>
+                                    <div class="card-body"><canvas id="confirmed700BarChart" width="100%" height="40"></canvas></div>
+                                </div> 
+                            </div> 
+                             <div class="col-xl-12">
+                                <!-- <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-area mr-1"></i>Area Chart Example</div>
+                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                </div> -->
+                                 <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Countries Confirmed Covid-19 Cases Between <b> 5000 & 150</b></div>
+                                    <div class="card-body"><canvas id="confirmed100BarChart" width="100%" height="40"></canvas></div>
+                                </div> 
+                            </div> 
+                            <div class="col-xl-12">
+                                <!-- <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-area mr-1"></i>Area Chart Example</div>
+                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                </div> -->
+                                 <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Countries Confirmed Covid-19 Cases Less Than <b> 150</b></div>
+                                    <div class="card-body"><canvas id="confirmed10BarChart" width="100%" height="40"></canvas></div>
+                                </div> 
+                            </div> 
+
+                        </div>
+              
+                            <div class="card  col-xl-12">
+                            <div class="card-header"><i class="fas fa-table mr-1"></i>COVID-19 Data For Countires</div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                   <th scope="col">Sr. No</th>
+                                                  <th scope="col">Country Name</th>
+                                                  <th scope="col">Confirmed</th>
+                                                  <th scope="col">Active</th>
+                                                  <th scope="col"> Deaths</th>
+                                                  <th scope="col"> Recovered</th>
+                                                  <th scope="col"> Recovery Rate</th>
+                                                
+                                                 <th scope="col"> last_update</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for i in total_countries %}
+                                                <tr>
+                                                     <td>{{i.id}}</td>
+                                                    <td>{{i.country}}</td>
+                                                   <td>{{i.confirmed}}</td>
+                                                   <td>{{i.active}}</td>
+                                                   <td>{{i.deaths}}</td>
+                                                   <td>{{i.recovered}}</td>
+                                                   <td id='{{i.country}}'>
+                                                  
+
+                                                    <script type="text/javascript">
+
+                                                        var active =  {{i.confirmed|safe}};
+                                                        var recover  = ( {{i.recovered|safe}});
+                                                        var total  = (recover/active )*100;
+                                                         document.getElementById('{{i.country|safe}}').innerHTML = total.toString()+" %";                                                      
+
+                                                    </script>
+                                                   </td>
+                                                   
+                                                   <td id="{{i.id}}">
+                                                     <script type="text/javascript">
+                                                        var date1 = new Date({{i.last_update|safe}});
+                                                        date2 = date1.getHours() +':' + date1.getMinutes() + ':' + date1.getSeconds()
+                                                            document.getElementById('{{i.id|safe}}').innerHTML=  date2 +',' + date1.toDateString()
+                                                      </script>
+                                                   </td>    
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    </main>
+             
+   
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="{% static 'js/scripts.js' %}"></script>
+      
+        <script src="{% static '/assets/demo/chart-area-demo.js' %}"></script>
+        <script src="{% static '/assets/demo/chart-bar-demo.js' %}"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+        <script src="{% static 'assets/demo/datatables-demo.js' %}"></script>
+
+
+<script type="text/javascript">
+   // Set new default font family and font color to mimic Bootstrap's default styling
+Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+Chart.defaults.global.defaultFontColor = '#292b2c';
+
+// Bar Chart Example
+var ctx = document.getElementById("topCountryActiveBarChart");
+var myLineChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: {{top_country_active|safe}},
+    datasets: [{
+      label: "COVID-19  ",
+      backgroundColor: "rgba(2,117,216,1)",
+      borderColor: "rgba(2,117,216,1)",
+      data: {{top_active|safe}},
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 150
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 40000,
+          maxTicksLimit: 150
+        },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+
+// MID active Chart Example
+var ctx1 = document.getElementById("midCountryActiveBarChart");
+var myLineChart = new Chart(ctx1, {
+  type: 'bar',
+  data: {
+    labels: {{mid_active_country|safe}},
+    datasets: [{
+      label: "COVID-19  ",
+      backgroundColor: "rgba(2,117,216,1)",
+      borderColor: "rgba(2,117,216,1)",
+      data: {{mid_active|safe}},
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 150
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 700,
+          maxTicksLimit: 150
+        },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+
+
+// Bottom Active Bar
+// MID active Chart Example
+var ctx2 = document.getElementById("bottomCountryActiveBarChart");
+var myLineChart = new Chart(ctx2, {
+  type: 'bar',
+  data: {
+    labels: {{bottom_country_active|safe}},
+    datasets: [{
+      label: "COVID-19  ",
+      backgroundColor: "rgba(2,117,216,1)",
+      borderColor: "rgba(2,117,216,1)",
+      data: {{bottom_active|safe}},
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 150
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 100,
+          maxTicksLimit: 150
+        },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+
+// Top Recovere 
+
+
+// Bar Chart Example
+var ctx3 = document.getElementById("topCountryRecoveredBarChart");
+var myLineChart = new Chart(ctx3, {
+  type: 'bar',
+  data: {
+    labels: {{top_country_recovered|safe}},
+    datasets: [{
+      label: "COVID-19  ",
+      backgroundColor: "rgba(2,117,216,1)",
+      borderColor: "rgba(2,117,216,1)",
+      data: {{top_recovered|safe}},
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 150
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 80000,
+          maxTicksLimit: 150
+        },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+
+
+// Mid Recovered
+var ctx4 = document.getElementById("midCountryRecoveredBarChart");
+var myLineChart = new Chart(ctx4, {
+  type: 'bar',
+  data: {
+    labels: {{mid_recovered_country|safe}},
+    datasets: [{
+      label: "COVID-19  ",
+      backgroundColor: "rgba(2,117,216,1)",
+      borderColor: "rgba(2,117,216,1)",
+      data: {{mid_recovered|safe}},
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 150
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 400,
+          maxTicksLimit: 150
+        },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+ 
+
+// Mid Recovered
+var ctx5 = document.getElementById("bottomCountryRecoveredBarChart");
+var myLineChart = new Chart(ctx5, {
+  type: 'bar',
+  data: {
+    labels: {{bottom_country_recovered|safe}},
+    datasets: [{
+      label: "COVID-19  ",
+      backgroundColor: "rgba(2,117,216,1)",
+      borderColor: "rgba(2,117,216,1)",
+      data: {{bottom_recovered|safe}},
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 150
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 90,
+          maxTicksLimit: 150
+        },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+
+
+
+
+var ctx6 = document.getElementById("topCountryDeathBarChart");
+var myLineChart = new Chart(ctx6, {
+  type: 'bar',
+  data: {
+    labels: {{top_country_death|safe}},
+    datasets: [{
+      label: "Deaths -> COVID-19 ",
+      backgroundColor: "rgba(2,117,216,1)",
+      borderColor: "rgba(2,117,216,1)",
+      data: {{top_deaths|safe}},
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 150
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 5000,
+          maxTicksLimit: 150
+        },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+
+
+
+// var ctx7 = document.getElementById("midCountryDeathBarChart");
+// var myLineChart = new Chart(ctx7, {
+//   type: 'bar',
+//   data: {
+//     labels: {{mid_deaths_country|safe}},
+//     datasets: [{
+//       label: "Deaths -> COVID-19 ",
+//       backgroundColor: "rgba(2,117,216,1)",
+//       borderColor: "rgba(2,117,216,1)",
+//       data: {{mid_deaths_country|safe}},
+//     }],
+//   },
+//   options: {
+//     scales: {
+//       xAxes: [{
+//         time: {
+//           unit: 'month'
+//         },
+//         gridLines: {
+//           display: false
+//         },
+//         ticks: {
+//           maxTicksLimit: 150
+//         }
+//       }],
+//       yAxes: [{
+//         ticks: {
+//           min: 0,
+//           max: 700,
+//           maxTicksLimit: 150
+//         },
+//         gridLines: {
+//           display: true
+//         }
+//       }],
+//     },
+//     legend: {
+//       display: false
+//     }
+//   }
+// });
+
+
+
+// var ctx7 = document.getElementById("midCountryDeathBarChart");
+// var myLineChart = new Chart(ctx7, {
+//   type: 'bar',
+//   data: {
+//     labels:{{mid_deaths_country|safe}},
+//     datasets: [{
+//       label: "Deaths -> COVID-19 ",
+//       backgroundColor: "rgba(2,117,216,1)",
+//       borderColor: "rgba(2,117,216,1)",
+//       data: {{mid_deaths_country|safe}},
+//     }],
+//   },
+//   options: {
+//     scales: {
+//       xAxes: [{
+//         time: {
+//           unit: 'month'
+//         },
+//         gridLines: {
+//           display: false
+//         },
+//         ticks: {
+//           maxTicksLimit: 150
+//         }
+//       }],
+//       yAxes: [{
+//         ticks: {
+//           min: 0,
+//           max: 700,
+//           maxTicksLimit: 150
+//         },
+//         gridLines: {
+//           display: true
+//         }
+//       }],
+//     },
+//     legend: {
+//       display: false
+//     }
+//   }
+// });
+
+
+var ctx8 = document.getElementById("bottomCountryDeathBarChart");
+var myLineChart = new Chart(ctx8, {
+  type: 'bar',
+  data: {
+    labels: {{bottom_country_deaths|safe}},
+    datasets: [{
+      label: "Deaths -> COVID-19 ",
+      backgroundColor: "rgba(2,117,216,1)",
+      borderColor: "rgba(2,117,216,1)",
+      data: {{bottom_deaths|safe}},
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 150
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 700,
+          maxTicksLimit: 150
+        },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+
+
+
+
+var ctx9 = document.getElementById("confirmed700BarChart");
+var myLineChart = new Chart(ctx9, {
+  type: 'bar',
+  data: {
+    labels: {{lst_confirmed_700_country|safe}},
+    datasets: [{
+      label: "Deaths -> COVID-19 ",
+      backgroundColor: "rgba(2,117,216,1)",
+      borderColor: "rgba(2,117,216,1)",
+      data: {{lst_confirmed_700|safe}},
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 150
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 90000,
+          maxTicksLimit: 150
+        },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+
+
+var ctx10 = document.getElementById("confirmed100BarChart");
+var myLineChart = new Chart(ctx10, {
+  type: 'bar',
+  data: {
+    labels: {{lst_confirmed_100_country|safe}},
+    datasets: [{
+      label: "Deaths -> COVID-19 ",
+      backgroundColor: "rgba(2,117,216,1)",
+      borderColor: "rgba(2,117,216,1)",
+      data: {{lst_confirmed_100|safe}},
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 150
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 5000,
+          maxTicksLimit: 150
+        },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+
+
+var ctx11 = document.getElementById("confirmed10BarChart");
+var myLineChart = new Chart(ctx11, {
+  type: 'bar',
+  data: {
+    labels: {{lst_confirmed_10_country|safe}},
+    datasets: [{
+      label: "Deaths -> COVID-19 ",
+      backgroundColor: "rgba(2,117,216,1)",
+      borderColor: "rgba(2,117,216,1)",
+      data: {{lst_confirmed_10|safe}},
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 150
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 150,
+          maxTicksLimit: 150
+        },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+
+
+</script>
+   
+
+
+
+{% endblock %}

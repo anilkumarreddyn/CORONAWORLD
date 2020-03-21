@@ -1,0 +1,85 @@
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<p>Hey THis is up</p>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+
+
+
+<form action="{% url 'countries_form' %}" method="POST">
+
+	
+	{% csrf_token %}
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+
+    <select class="form-control" name="id">
+    	<option>Select the Contry</option>
+    		{% for i in covid 	%}
+    	
+    	<option value="{{i.id}}"> {{i.country}}</option>
+    	{% endfor %}
+
+    </select>
+  </div>
+
+
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+
+<table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">Contires Id</th>
+      <th scope="col">Country Name</th>
+      <th scope="col">Confirmed</th>
+      <th scope="col">Active</th>
+      <th scope="col"> Deaths</th>
+      <th scope="col"> Recovered</th>
+      <th scope="col"> Latitude</th>
+      <th scope="col"> longitude</th>
+     <th scope="col"> last_update</th>
+       
+     
+  </thead>
+  
+
+{'id': '32', 'country': 'India', 'confirmed': 184, 'active': 165, 'deaths': 4, 'recovered': 15, 'latitude': 20.5937, 'longitude': 78.9629, 'last_update': 1584634416000}
+
+<tbody>
+	
+
+    <tr>
+      <th scope="row">1</th>
+
+ 	    <td>{{contry_cases.country}}</td>
+ 	
+       <td>{{contry_cases.confirmed}}</td>
+       <td>{{contry_cases.active}}</td>
+       <td>{{contry_cases.deaths}}</td>
+       <td>{{contry_cases.recovered}}</td>
+       <td>{{contry_cases.latitude}}</td>
+       <td>{{contry_cases.longitude}}</td>
+       <td>
+          <script type="text/javascript">
+
+            var date = new Date({{contry_cases.last_update|safe}});
+      
+             console.log(date.toDateString())
+            
+                   alert(date.toDateString());
+          </script>
+
+       </td>	
+</tr>
+</table>
+
+

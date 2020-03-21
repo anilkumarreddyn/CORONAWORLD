@@ -1,0 +1,635 @@
+{% extends 'base.html' %}
+{%block content %}
+{%load staticfiles %}
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                        <h1 class="mt-4">Dashboard</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
+                     <!--    <div class="row">
+                     <div class="col-xl-3 col-md-6">
+                                <form action="{% url 'countries_form' %}" method="POST">
+                                    {% csrf_token %}
+                                  <div class="form-group">
+                                   
+                                    <select class="form-control" name="id">
+                                        <option>Select the Contry</option>
+                                            {% for i in covid   %}
+                                        <option  class="text-info" value="{{i.id}}"> {{i.country}}</option>
+                                        {% endfor %}
+                                    </select>
+                                  </div>
+                                  <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-warning text-white mb-4">
+                                    <div class="card-body">Total Confirmed </div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">{{total_confirmed}}</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                       <div class="col-xl-3 col-md-6">
+                                <div class="card bg-success text-white mb-4">
+                                    <div class="card-body">Total Recovered </div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white " href="#">{{recovered}}</a>
+                                        <!-- <div class="small text-white"><i class="fas fa-angle-right"></i></div> -->
+                                    <!-- </div>
+                                </div>
+                            </div>   -->
+                       <!--  <div class="col-xl-3 col-md-6">
+                          <div class="card bg-danger text-white mb-4">
+                              <div class="card-body">Total Death</div>
+                              <div class="card-footer d-flex align-items-center justify-content-between">
+                                  <a class="small text-white " href="#">{{total_death}}</a>
+                                  <!-- <div class="small text-white"><i class="fas fa-angle-right"></i></div> -->
+                            <!--   </div>
+                          </div>
+                        </div>  
+                        </div>-->
+                          <div class="row">
+                            <div class="col-xl-12">
+                                <!-- <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-area mr-1"></i>Area Chart Example</div>
+                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                </div> -->
+                                 <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Cavid-19 Cases greater than 700</div>
+                                    <div class="card-body"><canvas id="topCountryActiveBarChart" width="100%" height="40"></canvas></div>
+                                </div> 
+                            </div> 
+                        </div>
+              
+                            <div class="card  col-xl-12">
+                            <div class="card-header"><i class="fas fa-table mr-1"></i>DataTable Example</div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                   <th scope="col">Contires Id</th>
+                                                  <th scope="col">Country Name</th>
+                                                  <th scope="col">Confirmed</th>
+                                                  <th scope="col">Active</th>
+                                                  <th scope="col"> Deaths</th>
+                                                  <th scope="col"> Recovered</th>
+                                                  <th scope="col"> Recovery Rate</th>
+                                                  <th scope="col"> Latitude</th>
+                                                  <th scope="col"> longitude</th>
+                                                 <th scope="col"> last_update</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for i in total_countries %}
+                                                <tr>
+                                                     <td>{{i.id}}</td>
+                                                    <td>{{i.country}}</td>
+                                                   <td>{{i.confirmed}}</td>
+                                                   <td>{{i.active}}</td>
+                                                   <td>{{i.deaths}}</td>
+                                                   <td>{{i.recovered}}</td>
+                                                   <td id='{{i.recovered}}'>
+                                                  
+
+                                                    <script type="text/javascript">
+
+                                                        var active =  {{i.active|safe}};
+                                                        var recover  = ( {{i.recovered|safe}});
+                                                        var total  = (recover/active )*100;
+                                                         document.getElementById('{{i.recovered|safe}}').innerHTML = total.toString()+"%";                                                      
+
+                                                    </script>
+
+
+
+                                                   </td>
+                                                   <td>{{i.latitude}}</td>
+                                                   <td>{{i.longitude}}</td>
+                                                   <td id="{{i.last_update}}">
+                                                     <script type="text/javascript">
+                                                        var date1 = new Date({{i.last_update|safe}});
+                                                            document.getElementById('{{i.last_update|safe}}').innerHTML=date1.toDateString()
+                                                      </script>
+                                                   </td>    
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    </main>
+             
+   
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="{% static 'js/scripts.js' %}"></script>
+      
+        <script src="{% static '/assets/demo/chart-area-demo.js' %}"></script>
+        <script src="{% static '/assets/demo/chart-bar-demo.js' %}"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+        <script src="{% static 'assets/demo/datatables-demo.js' %}"></script>
+
+
+<script type="text/javascript">
+   // Set new default font family and font color to mimic Bootstrap's default styling
+Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+Chart.defaults.global.defaultFontColor = '#292b2c';
+
+// Bar Chart Example
+var ctx = document.getElementById("topCountryActiveBarChart");
+var myLineChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: {{top_country_active|safe}},
+    datasets: [{
+      label: "Revenue",
+      backgroundColor: "rgba(2,117,216,1)",
+      borderColor: "rgba(2,117,216,1)",
+      data: {{top_active|safe}},
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 150
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 15000,
+          maxTicksLimit: 150
+        },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+
+
+
+//  // Set new default font family and font color to mimic Bootstrap's default styling
+// Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+// Chart.defaults.global.defaultFontColor = '#292b2c';
+
+// // Bar Chart Example
+// var mid_cont = document.getElementById("midCountryActiveBarChart");
+// var myLineChart = new Chart(mid_cont, {
+//   type: 'bar',
+//   data: {
+//     labels: {{mid_country|safe}},
+//     datasets: [{
+//       label: "Revenue",
+//       backgroundColor: "rgba(2,117,216,1)",
+//       borderColor: "rgba(2,117,216,1)",
+//       data: {{mid_active|safe}},
+//     }],
+//   },
+//   options: {
+//     scales: {
+//       xAxes: [{
+//         time: {
+//           unit: 'month'
+//         },
+//         gridLines: {
+//           display: false
+//         },
+//         ticks: {
+//           maxTicksLimit: 150
+//         }
+//       }],
+//       yAxes: [{
+//         ticks: {
+//           min: 0,
+//           max: 700,
+//           maxTicksLimit: 150
+//         },
+//         gridLines: {
+//           display: true
+//         }
+//       }],
+//     },
+//     legend: {
+//       display: false
+//     }
+//   }
+// });
+
+
+
+
+// var ctx1 = document.getElementById("bottomCountryActiveBarChart");
+// var myLineChart1 = new Chart(ctx1, {
+//   type: 'bar',
+//   data: {
+//     labels: {{bottom_country|safe}},
+//     datasets: [{
+//  label: "Covid1-19 Cases : ",
+//       backgroundColor: "rgba(2,117,216,1)",
+//       borderColor: "rgba(2,117,216,1)",
+//       data: {{bottom_active|safe}},
+//     }],
+//   },
+//   options: {
+//     scales: {
+//       xAxes: [{
+//         time: {
+//           unit: 'month'
+//         },
+//         gridLines: {
+//           display: false
+//         },
+//         ticks: {
+//           maxTicksLimit: 100
+//         }
+//       }],
+//       yAxes: [{
+//         ticks: {
+//           min: 0,
+//           max: 100,
+//           maxTicksLimit: 150
+//         },
+//         gridLines: {
+//           display: true
+//         }
+//       }],
+//     },
+//     legend: {
+//       display: false
+//     }
+//   }
+// });
+
+
+
+
+// // Bottom Chart Example
+// var ctx3 = document.getElementById("topComfirmedCountryActiveBarChart");
+// var myLineChart1 = new Chart(ctx3, {
+//   type: 'bar',
+//   data: {
+//     labels: {{top_confirmed_country|safe}},
+//     datasets: [{
+//      label: "Covid1-19 Death Cases : ",
+//       backgroundColor: "rgba(2,117,216,1)",
+//       borderColor: "rgba(2,117,216,1)",
+//       data: {{top_confirmed|safe}},
+//     }],
+//   },
+//   options: {
+//     scales: {
+//       xAxes: [{
+//         time: {
+//           unit: 'month'
+//         },
+//         gridLines: {
+//           display: false
+//         },
+//         ticks: {
+//           maxTicksLimit: 100
+//         }
+//       }],
+//       yAxes: [{
+//         ticks: {
+//           min: 0,
+//           max: 100,
+//           maxTicksLimit: 150
+//         },
+//         gridLines: {
+//           display: true
+//         }
+//       }],
+//     },
+//     legend: {
+//       display: false
+//     }
+//   }
+// });
+
+/*
+// Bottom Chart Example
+var ctx5 = document.getElementById("midDeathCountryActiveBarChart");
+var myLineChart1 = new Chart(ctx5, {
+  type: 'bar',
+  data: {
+    labels: {{mid_death_country|safe}},
+    datasets: [{
+       label: "Covid1-19 Death Cases : ",
+      backgroundColor: "rgba(2,117,216,1)",
+      borderColor: "rgba(2,117,216,1)",
+      data: {{mid_death|safe}},
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 100
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 100,
+          maxTicksLimit: 150
+        },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+
+
+// Bottom Chart Example
+var ctx4 = document.getElementById("bottomDeathCountryActiveBarChart");
+var myLineChart1 = new Chart(ctx4, {
+  type: 'bar',
+  data: {
+    labels: {{bottom_death_country|safe}},
+    datasets: [{
+  label: "Covid1-19 Death Cases : ",
+      backgroundColor: "rgba(2,117,216,1)",
+      borderColor: "rgba(2,117,216,1)",
+      data: {{bottom_death|safe}},
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 100
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 100,
+          maxTicksLimit: 150
+        },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+
+
+
+top_confirmed
+
+
+
+
+// Bottom Chart Example
+var ctx6 = document.getElementById("topComfirmedCountryActiveBarChart");
+var myLineChart1 = new Chart(ctx6, {
+  type: 'bar',
+  data: {
+    labels: {{top_confirmed_country|safe}},
+    datasets: [{
+        label: "Covid1-19 Confirmed Cases : ",
+      backgroundColor: "rgba(2,117,216,1)",
+      borderColor: "rgba(2,117,216,1)",
+      data: {{top_confirmed|safe}},
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 100
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 100,
+          maxTicksLimit: 150
+        },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+
+
+// Bottom Chart Example
+var ctx7 = document.getElementById("midComfirmedCountryActiveBarChart");
+var myLineChart1 = new Chart(ctx7, {
+  type: 'bar',
+  data: {
+    labels: {{bottom_country|safe}},
+    datasets: [{
+         label: "Covid1-19 Confirmed Cases : ",
+      backgroundColor: "rgba(2,117,216,1)",
+      borderColor: "rgba(2,117,216,1)",
+      data: {{mid_confirmed|safe}},
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 100
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 100,
+          maxTicksLimit: 150
+        },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+// Bottom Chart Example
+var ctx8 = document.getElementById("bottomComfirmedCountryActiveBarChart");
+var myLineChart1 = new Chart(ctx8, {
+  type: 'bar',
+  data: {
+    labels: {{bottom_country|safe}},
+    datasets: [{
+      label: "Revenue",
+      backgroundColor: "rgba(2,117,216,1)",
+      borderColor: "rgba(2,117,216,1)",
+      data: {{bottom_confirmed|safe}},
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 100
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 100,
+          maxTicksLimit: 150
+        },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+
+
+
+
+
+// Set new default font family and font color to mimic Bootstrap's default styling
+Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+Chart.defaults.global.defaultFontColor = '#292b2c';
+
+// Pie Chart Example
+var ctx15 = document.getElementById("myPieChart1");
+var myPieChart1 = new Chart(ctx15, {
+  type: 'pie',
+  data: {
+    labels: {{top_country|safe}},
+    datasets: [{
+      data:[{{contry_cases.confirmed|safe}},{{contry_cases.active|safe}},{{contry_cases.deaths|safe}},{{contry_cases.recovered|safe}} ]
+      backgroundColor: [
+    "#000000",  "#BDEDFF",  "#57E964","#FFD801",],
+    }],
+  },
+});
+
+
+
+
+
+// Set new default font family and font color to mimic Bootstrap's default styling
+Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+Chart.defaults.global.defaultFontColor = '#292b2c';
+
+// Pie Chart Example
+var ctx10 = document.getElementById("myPieChart");
+var myPieChart = new Chart(ctx10, {
+  type: 'pie',
+  data: {
+    labels: {{top_country|safe}},
+    datasets: [{
+      data:{{top_active|safe}},
+      backgroundColor: [
+    "#000000",  "#BDEDFF",  "#57E964",  "#5C5858",      "#BCE954",  "#646D7E",  "#307D7E",  "#ECE5B6",      "#347C17",  "#EE9A4D",
+        "#64E986",      "#50EBEC",  "#EDDA74",  "#566D7E",  "#5E7D7E",  "#FFE5B4",  "#1F45FC",  "#348017",  "#C8B560",
+"#2C3539",  "#E0FFFF",      "#666362",  "#4EE2EC",  "#EDE275",  "#737CA1",          "#6960EC",      "#D4A017",
+    "#EBF4FA",  "#00FF00",          "#FFE87C",      "#008080",  "#FFD801",  "#736AFF",  "#6AA121",  "#C2B280",
+"#34282C",  "#F0F8FF",  "#5FFB17",      "#92C7C7",  "#FFFF00",  "#2B547E",  "#4E8975",  "#FDD017",      "#4AA02C",  
+"#B4CFEC",  "#F0FFFF",  "#87F717",  "#736F6E",  "#77BFC7",          "#78866B",  "#EAC117",  "#368BC1",  "#41A317",  "#C68E17",
+"#3B3131",      "#8AFB17",      "#78C7C7",  "#FFFFC2",  "#151B54",  "#848b79",  "#F2BB66",  "#488AC7",  "#3EA055",  "#B5A642",
+"#82CAFF",  "#93FFE8",  "#6AFB92",  "#848482",  "#C35817",  "#FFFFCC",  "#000080",  "#617C58",  "#FBB917",      "#6CBB3C",  "#ADA96E",
+"#3D3C3A",  "#9AFEFF",      "#C36241",  "#43C6DB",  "#FFF8C6",  "#342D7E",  "#728C00",      "#659EC7",      "#C19A6B",
+"#B7CEEC",  "#AFDCEC",  "#B5EAAA",  "#D1D0CE",  "#46C7C7",  "#FFF8DC",  "#15317E",      "#FFA62F",  "#87AFC7",  "#4CC417",  "#CD7F32",
+"#A0CFEC",  "#00FFFF",  "#C3FDB8",      "#7BCCB5",      "#151B8D",  "#254117",  "#E9AB17",  "#95B9C7",  "#52D017",  "#C88141",
+"#504A4B",  "#7DFDFE",  "#CCFB5D",  "#BCC6CC",  "#43BFC7",  "#FBF6D9",  "#0000A0",  "#306754",  "#E2A76F",  "#728FCE",  "#4CC552",  "#C58917",
+"#3BB9FF",  "#57FEFF",  "#B1FB17",  "#98AFC7",      "#FAEBD7",  "#0020C2",      "#DEB887",  "#2B65EC",  "#54C571",  
+"#79BAEC",          "#6D7B8D",  "#3B9C9C",  "#F7E7CE",      "#437C17",  "#FFCBA4",      "#99C68E",  "#AF7817",
+"#82CAFA",      "#835C3B",  "#657383",  "#438D80",  "#FFEBCD",  "#2554C7",  "#387C44",  "#C9BE62",  "#157DEC",      "#B87333",
+        "#7F5217",      "#348781",      "#1569C7",  "#347C2C",      "#1589FF",  "#85BB65",  "#966F33",  
+            "#7F5217",      "#348781",      "#1569C7",  "#347C2C",      "#1589FF",  "#85BB65",  "#966F33",
+        "#7F462C",                              "#8BB381",  "#806517",
+        "#C47451",                          "#6698FF",  "#9CB071",  
+                                    "#38ACEC",      "#827B60",
+"#C2DFFF",                                  "#56A5EC",  "#9DC209",  "#786D5F",
+                                    "#5CB3FF",  "#A1C935",  "#493D26",
+        "#CC6600",                                  
+"#ADDFFF",      "#E56717",                                  
+        "#E66C2C",                                  
+        "#F87217",                                  
+        "#F87431"                                 
+
+
+
+
+
+
+],
+    }],
+  },
+});
+
+        </script>
+   
+
+
+
+{% endblock %}
