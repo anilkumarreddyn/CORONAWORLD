@@ -54,10 +54,10 @@
                                     {% csrf_token %}
                                   <div class="form-group">
                                    
-                                    <select class="form-control" name="id">
-                                        <option>Select the Contry</option>
+                                    <select  class="form-control" name="id" >
+                                        <!-- <option value="32">India</option> -->
                                             {% for i in covid   %}
-                                        <option  class="text-info"   value="{{i.id}}"> {{i.country}}</option>
+                                        <option  style="color:black!important;"  value="{{i.id}}"> {{i.name}}</option>
                                         {% endfor %}
                                     </select>
                                   </div>
@@ -91,14 +91,15 @@
                                                     <td>{{contry_cases.active}}</td>
                                                     <td>{{contry_cases.deaths}}</td>
                                                     <td>{{contry_cases.recovered}}</td>
-                                                    <td id="time">
+                                                    <td id="time3">
                                                  <script type="text/javascript">
                                                     var date = new Date({{contry_cases.last_update|safe}});
+                                                    
 
                                                         date2 = date1.getHours() +':' + date1.getMinutes() + ':' + date1.getSeconds();
-                                                        document.getElementById('time').innerHTML= date2 + ':' +  date.toDateString();
+                                                        document.getElementById('time3').innerHTML= date2 + ':' +  date.toDateString();
 
-                                                        document.getElementById('lastUpdate').innerHTML= "Updated  at "+date2 + ':' +  date.toDateString();
+                                                        document.getElementById('lastUpdate3').innerHTML= "Updated  at "+date2 + ':' +  date.toDateString();
                                                               
 
                                                   </script>
@@ -116,9 +117,9 @@
                                     <div class="card-body"><canvas id="countryActiveBarChart" width="100%" height="40"></canvas></div>
                                 </div> -->
                                 <div class="card mb-4">
-                                    <div class="card-header"><i class="fas fa-chart-pie mr-1"></i>{{contry_cases.country}} Pie Chart</div>
+                                    <div class="card-header"><i class="fas fa-chart-pie mr-1"></i>{{contry_cases.country}} COVID-19 Pie Chart</div>
                                     <div class="card-body"><canvas id="myPieChart" width="100%" height="50"></canvas></div>
-                                    <div class="card-footer small text-muted" id="lastUpdate"></div>
+                                    <div class="card-footer small text-muted" id="lastUpdate3"></div>
                                 </div>
                             </div>
 
@@ -131,8 +132,10 @@
                         </div>
                         </main>
                 
-            </div>
-        </div>
+          
+        
+
+
 
 
 

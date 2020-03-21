@@ -356,9 +356,9 @@ def countries_form(request):
 	# print("mid countries",mid_country)
 	# print("bottom active",bottom_active)
 	# print("bottom country",bottom_country)
+	print (countries)
 
-	return  render(request,'country_specific.html',{'covid':countries,'contry_cases':country_data,'top_country':top_country,'top_active':top_active,
-		'bottom_country':bottom_country,'bottom_active':bottom_active,'mid_country':mid_country,'mid_active':mid_active});
+	return  render(request,'country_specific.html',{'covid':countries,'contry_cases':country_data});
 
 
 def countries_covid():
@@ -381,10 +381,14 @@ def country_vise(request):
 	covid.get_data()
 	#print(covid)
 	countries = covid.list_countries()
+	va=covid.get_status_by_country_id(32)
+
 
 	context = {
 		'covid':countries,
+		'contry_cases':va
 	}
+
 	return render(request,'country_specific.html',context)
 
 
